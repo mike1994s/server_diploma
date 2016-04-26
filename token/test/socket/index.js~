@@ -9,16 +9,15 @@ module.exports = function(server, middle){
 	}); 
 
  	io.on('connection', function(socket){
-		console.log(socket.request);
   		console.dir(socket.request.session.passport)
-  		var id = socket.request.session.passport.user;
+  		var id = socket.request.session.passport;
 		User.findById(id, function(err, user) {
 			console.dir(user);
 			console.dir(err);
 			if (err)
 				return;
 			console.dir(user);
-           	  	socket.username =  user.vk.name || user.facebook.email;
+           	  	socket.username =  user.vk.name;
         	});
 		socket.on('chat message', function(msg){
   	 	 	io.emit('chat message', socket.username + ":" + msg);
